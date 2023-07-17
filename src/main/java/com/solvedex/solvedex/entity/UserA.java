@@ -10,10 +10,10 @@ import javax.persistence.*;
 @Entity
 @Setter
 @Getter
-@Table(name = "USER")
+@Table(name = "USUARIO")
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class UserA {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
