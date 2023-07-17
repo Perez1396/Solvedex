@@ -1,11 +1,15 @@
 package com.solvedex.solvedex.service.impl;
 
 import com.solvedex.solvedex.entity.BlogPost;
+import com.solvedex.solvedex.entity.UserA;
 import com.solvedex.solvedex.repository.BlogRepository;
+import com.solvedex.solvedex.repository.UserRepository;
 import com.solvedex.solvedex.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +19,8 @@ public class BlogServiceImpl implements BlogService {
 
     @Autowired
     private BlogRepository blogPostRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @Override
     public List<BlogPost> getAllBlogPosts() {
@@ -28,6 +34,10 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public BlogPost createBlogPost(BlogPost blogPost) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        UserA user = userRepository.findByUsername(username);
+        blogPost.setAuthor(username);
         return blogPostRepository.save(blogPost);
     }
 

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Setter
@@ -19,4 +20,5 @@ public class UserA {
     private Long id;
     private String username;
     private String password;
+    private String roles;
 }
