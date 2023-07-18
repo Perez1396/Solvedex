@@ -46,6 +46,7 @@ public class BlogController {
     }
 
     @PutMapping("/posts/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BlogPost> updatePost(
             @PathVariable(value = "id") Long postId,
             @RequestBody BlogPost postDetails
@@ -59,6 +60,7 @@ public class BlogController {
     }
 
     @DeleteMapping("/posts/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deletePost(@PathVariable(value = "id") Long postId) {
             blogService.deleteBlogPost(postId);
             return ResponseEntity.ok().build();

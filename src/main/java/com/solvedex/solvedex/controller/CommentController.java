@@ -4,6 +4,7 @@ import com.solvedex.solvedex.entity.Comment;
 import com.solvedex.solvedex.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -20,6 +21,7 @@ public class CommentController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Comment> createComment(@RequestBody Comment comment) {
         Comment createdComment = commentService.createComment(comment);
         return ResponseEntity.ok(createdComment);
@@ -41,6 +43,7 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Comment> updateComment(@PathVariable Long id, @RequestBody Comment comment) {
         Comment updatedComment = commentService.updateComment(id, comment);
         if (updatedComment != null) {
@@ -50,6 +53,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
         commentService.deleteComment(id);
         return ResponseEntity.noContent().build();
