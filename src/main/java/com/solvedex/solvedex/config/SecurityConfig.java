@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -47,16 +48,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests()
+        http.csrf().disable()
+                .cors() // Habilitar la configuración de CORS
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
                 .antMatchers("/api/auth/signup", "/api/auth/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/blog/posts", "/api/comments").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/blog/posts", "/api/comments").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT, "/api/blog/posts/{id}", "/api/comments/{id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/api/blog/posts/{id}", "/api/comments/{id}").hasRole("ADMIN")
-                // Adjust role as per your configuration
-                .anyRequest().authenticated();
-        http.addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+                .anyRequest().authenticated()
+                .and()
+                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override

@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/blog")
+@RequestMapping("/api/blog/posts")
+@CrossOrigin(origins = "*")
 public class BlogController {
 
     @Autowired
@@ -23,12 +24,12 @@ public class BlogController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("/posts")
+    @GetMapping()
     public List<BlogPost> getAllPosts() {
         return blogService.getAllBlogPosts();
     }
 
-    @GetMapping("/posts/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<BlogPost> getPostById(@PathVariable(value = "id") Long postId) {
         BlogPost post = blogService.getBlogPostById(postId);
         if (post != null) {
@@ -38,14 +39,14 @@ public class BlogController {
         }
     }
 
-    @PostMapping("/posts")
+    @PostMapping()
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BlogPost> createPost(@RequestBody BlogPost post) {
         BlogPost savedPost = blogService.createBlogPost(post);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPost);
     }
 
-    @PutMapping("/posts/{id}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BlogPost> updatePost(
             @PathVariable(value = "id") Long postId,
@@ -59,7 +60,7 @@ public class BlogController {
         }
     }
 
-    @DeleteMapping("/posts/{id}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deletePost(@PathVariable(value = "id") Long postId) {
             blogService.deleteBlogPost(postId);
