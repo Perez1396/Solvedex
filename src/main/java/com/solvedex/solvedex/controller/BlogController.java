@@ -1,9 +1,7 @@
 package com.solvedex.solvedex.controller;
 
 import com.solvedex.solvedex.entity.BlogPost;
-import com.solvedex.solvedex.entity.UserA;
-import com.solvedex.solvedex.repository.BlogRepository;
-import com.solvedex.solvedex.repository.CommentRepository;
+import com.solvedex.solvedex.model.BlogResponseDTO;
 import com.solvedex.solvedex.repository.UserRepository;
 import com.solvedex.solvedex.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +23,7 @@ public class BlogController {
     private UserRepository userRepository;
 
     @GetMapping()
-    public List<BlogPost> getAllPosts() {
+    public List<BlogResponseDTO> getAllPosts() {
         return blogService.getAllBlogPosts();
     }
 
